@@ -1,14 +1,8 @@
 (function () {
     let newUsersList = document.querySelector('.new-users-list');
+    let newUserForm = document.querySelector('#yourFormId'); // replace 'yourFormId' with the id of your form
 
-    // READ THE PDF BEFORE STARTING
-    // Step 1-5 is read the pdf.
-
-
-    // Add your code here
-
-
-    // the isValueNotEmpty function: 
+    // the isValueNotEmpty function:
     // returns true if value not empty
     // returns false if the value is empty
     function isValueNotEmpty(value) {
@@ -35,4 +29,65 @@
             </li>`;
         newUsersList.innerHTML = newUsersList.innerHTML + newUser;
     }
+
+    newUserForm.addEventListener('submit', function(event) {
+        // Prevent the form from submitting
+        event.preventDefault();
+
+        // Create variables for each input element
+        let usernameElement = event.target.elements.username;
+        let cityElement = event.target.elements.city;
+        let provinceElement = event.target.elements.province;
+
+        // Create variables for each input element value
+        let username = usernameElement.value;
+        let city = cityElement.value;
+        let province = provinceElement.value;
+
+        // Validate the form values
+        let isFormValid = true;
+
+        // Validate username
+        if (!isValueNotEmpty(username) || hasWhiteSpace(username)) {
+            isFormValid = false;
+            usernameElement.classList.add('is-invalid');
+            document.getElementById('usernameError').textContent = 'Username is invalid.';
+        } else {
+            usernameElement.classList.remove('is-invalid');
+            document.getElementById('usernameError').textContent = '';
+        }
+
+        // Validate city
+        if (!isValueNotEmpty(city)) {
+            isFormValid = false;
+            cityElement.classList.add('is-invalid');
+            document.getElementById('cityError').textContent = 'City is invalid.';
+        } else {
+            cityElement.classList.remove('is-invalid');
+            document.getElementById('cityError').textContent = '';
+        }
+
+        // Validate province
+        if (!isValueNotEmpty(province)) {
+            isFormValid = false;
+            provinceElement.classList.add('is-invalid');
+            document.getElementById('provinceError').textContent = 'Province is invalid.';
+        } else {
+            provinceElement.classList.remove('is-invalid');
+            document.getElementById('provinceError').textContent = '';
+        }
+
+        // Only call the addUser function if the form is valid
+        if (isFormValid) {
+            addUser(username, city, province);
+
+            // Clear the form inputs
+            usernameElement.value = '';
+            cityElement.value = '';
+            provinceElement.value = '';
+        }
+
+        // Log the values to the console
+        console.log('usernameElement:', usernameElement, 'username:', username, city, province);
+    });
 })();
